@@ -11,17 +11,16 @@ using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
 using Microsoft.ServiceFabric.Data;
-using AuthenticationService.Data;
-using Microsoft.EntityFrameworkCore;
+using ProfileService.Data;
 
-namespace AuthenticationService
+namespace ProfileService
 {
     /// <summary>
     /// The FabricRuntime creates an instance of this class for each service type instance.
     /// </summary>
-    internal sealed class AuthenticationService : StatelessService
+    internal sealed class ProfileService : StatelessService
     {
-        public AuthenticationService(StatelessServiceContext context)
+        public ProfileService(StatelessServiceContext context)
             : base(context)
         { }
 
@@ -49,11 +48,7 @@ namespace AuthenticationService
                         builder.Services.AddControllers();
                         builder.Services.AddEndpointsApiExplorer();
                         builder.Services.AddSwaggerGen();
-                        //ADD DBCONTEXT
                         builder.Services.AddDbContext<AppDbContext>();
-                        //HTTP API ClientFactory
-                        builder.Services.AddHttpClient();
-
                         var app = builder.Build();
                         if (app.Environment.IsDevelopment())
                         {
@@ -63,13 +58,12 @@ namespace AuthenticationService
                         app.UseAuthorization();
                         app.MapControllers();
 
-                        //CORS podesavanja
+                        //CORS
                         app.UseCors(builder =>
                         {
                             builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+                            builder.WithOrigins("httl://localhost:8553").AllowAnyHeader().AllowAnyMethod();
                         });
-
-                        
                         return app;
 
                     }))

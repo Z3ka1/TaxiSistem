@@ -12,14 +12,16 @@ namespace AuthenticationService.Controllers
     {
 
         private readonly AppDbContext _dbContext;
+        private readonly IHttpClientFactory _clientFactory;
 
-        public AuthenticationController(AppDbContext dbContext)
+        public AuthenticationController(AppDbContext dbContext, IHttpClientFactory clientFactory)
         {
             _dbContext = dbContext;
+            _clientFactory = clientFactory;
         }
 
         [HttpPost("register")]
-        public IActionResult RegisterUser([FromBody] UserRegistrationDTO userDTO)
+        public async Task<IActionResult> RegisterUser([FromBody] UserRegistrationDTO userDTO)
         {
             try
             {
@@ -41,10 +43,38 @@ namespace AuthenticationService.Controllers
                     UserType = userDTO.UserType
                 };
 
+                
+                //TODO: Osmisliti logiku da se ne ubacuje u bazu ako se ne uspesno posalje poruka UserProfile servisu
                 _dbContext.Credentials.Add(newCredentials);
                 _dbContext.SaveChanges();
+                
+                
+                //Slanje podataka ne vezanih za samu autentifikaciiju drugom servisu
+                var profileData = new UserProfileDTO
+                {
+                    UserID = newCredentials.Id,
+                    FirstName = userDTO.FirstName,
+                    LastName = userDTO.LastName,
+                    Address = userDTO.Address,
+                    DateOfBirth = userDTO.DateOfBirth,
+                    Email = userDTO.Email,
+                    Avatar = userDTO.Avatar
+                };
 
-                return Ok(new { message = "User registered successfully" });
+                var client = _clientFactory.CreateClient();
+                var response = await client.PostAsJsonAsync("http://localhost:8511/profile/create", profileData);
+                
+                
+                if(response.IsSuccessStatusCode)
+                {
+                    return Ok(new { message = "User registered successfully" });
+                }
+                else
+                {
+                    return StatusCode((int)response.StatusCode, new { message = "Failed to create user profile" });
+                }
+
+
             }
             catch(Exception e)
             {

@@ -5,7 +5,9 @@ VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "TaxiService", "TaxiService\TaxiService.sfproj", "{853823AF-61D7-4B23-8D5F-3523B014117B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationService", "AuthenticationService\AuthenticationService.csproj", "{744F9106-99A3-42BE-866F-D838300CBAEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationService", "AuthenticationService\AuthenticationService.csproj", "{744F9106-99A3-42BE-866F-D838300CBAEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProfileService", "ProfileService\ProfileService.csproj", "{FACF81BD-C9D8-4DA7-A80D-8BB9C69FB481}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,14 @@ Global
 		{744F9106-99A3-42BE-866F-D838300CBAEF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{744F9106-99A3-42BE-866F-D838300CBAEF}.Release|x64.ActiveCfg = Release|Any CPU
 		{744F9106-99A3-42BE-866F-D838300CBAEF}.Release|x64.Build.0 = Release|Any CPU
+		{FACF81BD-C9D8-4DA7-A80D-8BB9C69FB481}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FACF81BD-C9D8-4DA7-A80D-8BB9C69FB481}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FACF81BD-C9D8-4DA7-A80D-8BB9C69FB481}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FACF81BD-C9D8-4DA7-A80D-8BB9C69FB481}.Debug|x64.Build.0 = Debug|Any CPU
+		{FACF81BD-C9D8-4DA7-A80D-8BB9C69FB481}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FACF81BD-C9D8-4DA7-A80D-8BB9C69FB481}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FACF81BD-C9D8-4DA7-A80D-8BB9C69FB481}.Release|x64.ActiveCfg = Release|Any CPU
+		{FACF81BD-C9D8-4DA7-A80D-8BB9C69FB481}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
