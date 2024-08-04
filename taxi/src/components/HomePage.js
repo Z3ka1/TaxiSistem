@@ -1,12 +1,25 @@
+import { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
 
 const HomePage = () => {
-    return (
+  const[user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = JSON.parse(sessionStorage.getItem('user'));
+    setUser(storedUser);
+
+    if(storedUser) {
+      console.log('Logged in as: ' + storedUser.username);
+    }
+
+  }, []);  
+  
+  
+  return (
       <div>
         <h1>Taksi udruzenje</h1>
-        <p>
-          Dobrodosli na stranicu taksi udruzenja. Molimo vas da se prijavite ili registrujete.
-        </p>
+        {user ? ( <p>Welcome to taxi application. You are logged in as: {user.username}.</p>) 
+        : (<p>Welcome to taxi application. Please log in or register.</p>)}
       </div>
     );
   };

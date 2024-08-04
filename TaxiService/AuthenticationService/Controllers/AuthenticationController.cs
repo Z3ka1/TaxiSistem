@@ -3,6 +3,7 @@ using AuthenticationService.DTOs;
 using AuthenticationService.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using BCrypt.Net;
 
 namespace AuthenticationService.Controllers
 {
@@ -25,7 +26,9 @@ namespace AuthenticationService.Controllers
         {
             try
             {
-                if(!ModelState.IsValid)
+
+                #region Obrada za autentifikaciju
+                if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
@@ -35,20 +38,22 @@ namespace AuthenticationService.Controllers
                     return BadRequest(new { message = "Username already exists" });
                 }
 
+                int newUserId = _dbContext.Credentials.Count() + 1;
+                var hashedPassword = BCrypt.Net.BCrypt.HashPassword(userDTO.Password);
+
                 var newCredentials = new Credentials
                 {
-                    Id = 1,
+                    Id = newUserId,
                     Username = userDTO.Username,
-                    PasswordHash = userDTO.Password,
+                    PasswordHash = hashedPassword,
                     UserType = userDTO.UserType
                 };
-
                 
-                //TODO: Osmisliti logiku da se ne ubacuje u bazu ako se ne uspesno posalje poruka UserProfile servisu
+                
                 _dbContext.Credentials.Add(newCredentials);
                 _dbContext.SaveChanges();
-                
-                
+                #endregion
+
                 //Slanje podataka ne vezanih za samu autentifikaciiju drugom servisu
                 var profileData = new UserProfileDTO
                 {
@@ -71,10 +76,45 @@ namespace AuthenticationService.Controllers
                 }
                 else
                 {
+                    //Brisanje podataka o kredencijalima ukoliko nisu sacuvani podaci o profilu kroz drugi servis
+                    _dbContext.Credentials.Remove(newCredentials);
+                    _dbContext.SaveChanges();
                     return StatusCode((int)response.StatusCode, new { message = "Failed to create user profile" });
                 }
 
 
+            }
+            catch(Exception e)
+            {
+                return StatusCode(500, new { message = $"Internal server error: {e.Message}" });
+            }
+        }
+
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] LoginDTO loginDTO)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var creds = _dbContext.Credentials.FirstOrDefault(c => c.Username == loginDTO.Username);
+                if (creds == null || !BCrypt.Net.BCrypt.Verify(loginDTO.Password, creds.PasswordHash))
+                {
+                    return Unauthorized(new { message = "Invalid username or password" });
+                }
+
+                return Ok(new
+                {
+                    User = new
+                    {
+                        creds.Id,
+                        creds.Username,
+                        creds.UserType
+                    }
+                });
             }
             catch(Exception e)
             {

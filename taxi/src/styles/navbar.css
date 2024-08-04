@@ -25,3 +25,11 @@
     text-decoration: underline;
   }
   
+.logout {
+  background-color: darkred;
+  color:white;
+}
+
+.logout:hover {
+  background-color: red;
+}
