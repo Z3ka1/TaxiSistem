@@ -72,7 +72,26 @@ namespace AuthenticationService.Controllers
                 
                 if(response.IsSuccessStatusCode)
                 {
-                    return Ok(new { message = "User registered successfully" });
+                    #region Obrada ukoliko je Driver
+                    if (newCredentials.UserType == UserType.Driver)
+                    {
+                        var clientToDriverService = _clientFactory.CreateClient();
+                        var responseDriverService = await clientToDriverService.PostAsJsonAsync("http://localhost:8246/communication/addDriver", newCredentials.Id);
+                    
+                        if(responseDriverService.IsSuccessStatusCode)
+                        {
+                            return Ok(new { message = "Driver successfully registered" });
+                        }
+                        else
+                        {
+                            return StatusCode(500, responseDriverService.Content);
+                        }
+                    }
+                    #endregion
+                    else
+                    {
+                        return Ok(new { message = "User registered successfully" });
+                    }
                 }
                 else
                 {

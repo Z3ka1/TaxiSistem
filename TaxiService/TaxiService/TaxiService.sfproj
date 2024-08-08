@@ -39,6 +39,10 @@
     <ProjectReference Include="..\AuthenticationService\AuthenticationService.csproj">
       <ServiceLaunchUrl>http://localhost:{ServicePort}/swagger</ServiceLaunchUrl>
     </ProjectReference>
+    <ProjectReference Include="..\CommunicationAPI\CommunicationAPI.csproj">
+      <ServiceLaunchUrl>http://localhost:{ServicePort}/swagger</ServiceLaunchUrl>
+    </ProjectReference>
+    <ProjectReference Include="..\DriverService\DriverService.csproj" />
     <ProjectReference Include="..\ProfileService\ProfileService.csproj">
       <ServiceLaunchUrl>http://localhost:{ServicePort}/swagger</ServiceLaunchUrl>
     </ProjectReference>
