@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import LoginPage from './components/LoginPage';
 import RegistrationPage from './components/RegistrationPage';
 import ProfilePage from './components/ProfilePage';
+import VerificationPage from './components/VerificationPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/login" element = {<LoginPage/>} />
             <Route path="/register" element = {<RegistrationPage />} />
             <Route path="/profile" element = {<ProfilePage />} />
+            <Route path="/verification" element = {<VerificationPage />} />
           </Routes>
         </div>
       </div>

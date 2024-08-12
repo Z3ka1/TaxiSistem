@@ -6,5 +6,10 @@ namespace Communication
     {
         Task<string> GetServiceDetails();
         Task<string> RegisterDriver(int id);
+
+        Task<List<int>> ReturnPendingIds();
+        Task<string> ApproveDriver(int id);
+        Task<string> RejectDriver(int id);
+
     }
 }

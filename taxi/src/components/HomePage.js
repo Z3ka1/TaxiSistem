@@ -7,6 +7,7 @@ const HomePage = () => {
   useEffect(() => {
     const storedUser = JSON.parse(sessionStorage.getItem('user'));
     setUser(storedUser);
+    console.log(storedUser);
 
     if(storedUser) {
       console.log('Logged in as: ' + storedUser.username);

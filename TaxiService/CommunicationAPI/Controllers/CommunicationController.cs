@@ -45,5 +45,62 @@ namespace CommunicationAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("returnPending")]
+        public async Task<IActionResult> ReturnPendingIds()
+        {
+            var statefulProxy = ServiceProxy.Create<IDriverService>(
+                new Uri("fabric:/TaxiService/DriverService"),
+                new Microsoft.ServiceFabric.Services.Client.ServicePartitionKey(0));
+
+            var response = await statefulProxy.ReturnPendingIds();
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("approveDriver")]
+        public async Task<IActionResult> ApproveDriver([FromBody] int id)
+        {
+            var partitionId = id % 1;
+
+            var statefulProxy = ServiceProxy.Create<IDriverService>(
+                new Uri("fabric:/TaxiService/DriverService"),
+                new Microsoft.ServiceFabric.Services.Client.ServicePartitionKey(partitionId));
+
+            var response = await statefulProxy.ApproveDriver(id);
+
+            if (response == "Driver approved!")
+            {
+                return Ok(new { message = response });
+            }
+            else
+            {
+                return NotFound(new { message = response });
+            }
+        }
+
+        [HttpPost]
+        [Route("rejectDriver")]
+        public async Task<IActionResult> RejectDriver([FromBody] int id)
+        {
+            var partitionId = id % 1;
+
+            var statefulProxy = ServiceProxy.Create<IDriverService>(
+                new Uri("fabric:/TaxiService/DriverService"),
+                new Microsoft.ServiceFabric.Services.Client.ServicePartitionKey(partitionId));
+
+            var response = await statefulProxy.RejectDriver(id);
+
+            if (response == "Driver rejected!")
+            {
+                return Ok(new { message = response });
+            }
+            else
+            {
+                return NotFound(new { message = response });
+            }
+        }
+
     }
 }

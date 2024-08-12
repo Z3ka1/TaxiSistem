@@ -28,6 +28,7 @@ const Navbar = () => {
         {user == null && (<Link to="/login">Prijava</Link>)}
         {user == null && (<Link to="/register">Registracija</Link>)}
         {user && (<Link to="/profile">Profile</Link>)}
+        {user != null && user.userType == 0 && (<Link to ="/verification">Driver Verification</Link>)}
 
         {user && (<button class='logout' onClick={handleLogout}>Logout</button>)}
       </div>

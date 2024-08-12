@@ -12,11 +12,13 @@ namespace ProfileService.Controllers
     {
         private readonly AppDbContext _dbContext;
         private readonly ILogger<ProfileController> _logger;
+        private readonly IHttpClientFactory _clientFactory;
 
-        public ProfileController(ILogger<ProfileController> logger, AppDbContext dbContext)
+        public ProfileController(ILogger<ProfileController> logger, AppDbContext dbContext, IHttpClientFactory clientFactory)
         {
             _logger = logger;
             _dbContext = dbContext;
+            _clientFactory = clientFactory;
         }
 
         [HttpPost("create")]
@@ -109,6 +111,31 @@ namespace ProfileService.Controllers
             {
                 return StatusCode(500, new { message = $"Internal server error: {e.Message}" });
             }
+        }
+
+        [HttpPost("returnPendingDrivers")]
+        public async  Task<IActionResult> ReturnPendingDrivers()
+        {
+            var client = _clientFactory.CreateClient();
+            var response = await client.GetAsync("http://localhost:8246/communication/returnPending");
+
+            if(!response.IsSuccessStatusCode)
+            {
+                return StatusCode((int)response.StatusCode, "Failed to retrieve IDs of Drivers that have status = Pending");
+            }
+
+            var ids = await response.Content.ReadFromJsonAsync<List<int>>();
+
+            var profiles = _dbContext.Profiles
+                .Where(p => ids.Contains(p.Id))
+                .ToList();
+
+            if (profiles == null)
+            {
+                return NotFound("No profiles found with provided IDs.");
+            }
+
+            return Ok(profiles);
         }
 
     }

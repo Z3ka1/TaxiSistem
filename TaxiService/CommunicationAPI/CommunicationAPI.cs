@@ -47,6 +47,8 @@ namespace CommunicationAPI
                         builder.Services.AddControllers();
                         builder.Services.AddEndpointsApiExplorer();
                         builder.Services.AddSwaggerGen();
+
+                        builder.Services.AddHttpClient();
                         var app = builder.Build();
                         if (app.Environment.IsDevelopment())
                         {
@@ -59,7 +61,9 @@ namespace CommunicationAPI
                         //CORS podesavanja
                         app.UseCors(builder =>
                         {
+                            builder.WithOrigins("AllowAllOrigins").AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                             builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+                            builder.WithOrigins("http://localhost:8511").AllowAnyHeader().AllowAnyMethod();
                         });
 
                         return app;

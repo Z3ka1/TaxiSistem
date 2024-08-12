@@ -49,6 +49,8 @@ namespace ProfileService
                         builder.Services.AddEndpointsApiExplorer();
                         builder.Services.AddSwaggerGen();
                         builder.Services.AddDbContext<AppDbContext>();
+                        //HTTP API ClientFactory
+                        builder.Services.AddHttpClient();
                         var app = builder.Build();
                         if (app.Environment.IsDevelopment())
                         {

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Communication;
 using DriverService.Data;
 using DriverService.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Remoting.Runtime;
@@ -57,6 +58,49 @@ namespace DriverService
             {
                 return $"Error registering driver: {e.Message}";
             }
+        }
+
+        public async Task<List<int>> ReturnPendingIds()
+        {
+            var pendingDrivers = await _dbContext.Drivers
+                .Where(d => d.Status == VerificationStatus.Pending)
+                .Select(d => d.DriverID)
+                .ToListAsync();
+
+            return pendingDrivers;
+        }
+
+        public async Task<string> ApproveDriver(int id)
+        {
+            var driver = await _dbContext.Drivers.FirstOrDefaultAsync(d => d.DriverID == id);
+
+            if(driver == null)
+            {
+                return "Driver not found";
+            }
+
+            driver.Status = VerificationStatus.Approved;
+
+            await _dbContext.SaveChangesAsync();
+
+            return "Driver approved!";
+        }
+
+
+        public async Task<string> RejectDriver(int id)
+        {
+            var driver = await _dbContext.Drivers.FirstOrDefaultAsync(d => d.DriverID == id);
+
+            if (driver == null)
+            {
+                return "Driver not found";
+            }
+
+            driver.Status = VerificationStatus.Rejected;
+
+            await _dbContext.SaveChangesAsync();
+
+            return "Driver rejected!";
         }
 
         /// <summary>
