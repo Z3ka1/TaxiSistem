@@ -1,0 +1,84 @@
+.verification-page-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* Header */
+.verification-page-header {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+/* Table styles */
+.verification-page-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+.verification-page-table thead {
+    background-color: #f4f4f4;
+}
+
+.verification-page-table th, .verification-page-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.verification-page-table th {
+    font-weight: bold;
+    color: #555;
+}
+
+.verification-page-table td {
+    color: #444;
+}
+
+/* Avatar image */
+.verification-page-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+/* Button styles */
+.verification-page-button {
+    padding: 8px 16px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    color: white;
+}
+
+.verification-page-button-approve {
+    background-color: #4CAF50;
+}
+
+.verification-page-button-reject {
+    background-color: #f44336;
+}
+
+.verification-page-button-approve:hover {
+    background-color: #45a049;
+}
+
+.verification-page-button-reject:hover {
+    background-color: #e53935;
+}
+
+/* Loading and error messages */
+.verification-page-loading,
+.verification-page-error {
+    text-align: center;
+    font-size: 18px;
+    color: #666;
+}
+
+.verification-page-error {
+    color: #d9534f;
+}

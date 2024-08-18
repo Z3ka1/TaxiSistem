@@ -7,6 +7,8 @@ import LoginPage from './components/LoginPage';
 import RegistrationPage from './components/RegistrationPage';
 import ProfilePage from './components/ProfilePage';
 import VerificationPage from './components/VerificationPage';
+import NewRidePage from './components/NewRidePage';
+import CreatedRidesPage from './components/CreatedRidesPage';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
             <Route path="/register" element = {<RegistrationPage />} />
             <Route path="/profile" element = {<ProfilePage />} />
             <Route path="/verification" element = {<VerificationPage />} />
+            <Route path="/newRide" element = {<NewRidePage/>}/>
+            <Route path ="/createdRides" element = {<CreatedRidesPage/>}/>
           </Routes>
         </div>
       </div>

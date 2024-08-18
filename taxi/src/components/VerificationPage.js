@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
  
+import './../styles/verificationPage.css';
 const VerificationPage = () => {
     const [drivers, setDrivers] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -65,20 +66,20 @@ const VerificationPage = () => {
     };
  
     if (loading) {
-        return <div>Loading...</div>;
+        return <div className="verification-page-loading">Loading...</div>;
     }
- 
+
     if (error) {
-        return <div>Error: {error}</div>;
+        return <div className="verification-page-error">Error: {error}</div>;
     }
- 
+
     return (
-        <div>
-            <h1>Pending Driver Approvals</h1>
+        <div className="verification-page-container">
+            <h1 className="verification-page-header">Pending Driver Approvals</h1>
             {drivers.length === 0 ? (
                 <p>No pending drivers found.</p>
             ) : (
-                <table>
+                <table className="verification-page-table">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -101,9 +102,9 @@ const VerificationPage = () => {
                                 <td>{driver.address}</td>
                                 <td>{driver.dateOfBirth}</td>
                                 <td>{driver.email}</td>
-                                <td>{driver.avatar}</td>
-                                <td> <button onClick={() => handleApprove(driver.id)}>Approve</button></td>
-                                <td><button onClick={() => handleReject(driver.id)}>Reject</button></td>
+                                <td><img src={driver.avatar} alt="Avatar" className="verification-page-avatar" /></td>
+                                <td><button className="verification-page-button verification-page-button-approve" onClick={() => handleApprove(driver.id)}>Approve</button></td>
+                                <td><button className="verification-page-button verification-page-button-reject" onClick={() => handleReject(driver.id)}>Reject</button></td>
                             </tr>
                         ))}
                     </tbody>

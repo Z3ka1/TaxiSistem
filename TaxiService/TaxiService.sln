@@ -9,11 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationService", "Au
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProfileService", "ProfileService\ProfileService.csproj", "{FACF81BD-C9D8-4DA7-A80D-8BB9C69FB481}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DriverService", "DriverService\DriverService.csproj", "{30858A5E-135E-4700-9E0C-EFCFA57D4C31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriverService", "DriverService\DriverService.csproj", "{30858A5E-135E-4700-9E0C-EFCFA57D4C31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Communication", "Communication\Communication.csproj", "{5159801B-630C-4910-95F6-091DA4609152}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Communication", "Communication\Communication.csproj", "{5159801B-630C-4910-95F6-091DA4609152}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunicationAPI", "CommunicationAPI\CommunicationAPI.csproj", "{2F33730B-AC77-40C4-8D56-DCCC4E9C7B05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunicationAPI", "CommunicationAPI\CommunicationAPI.csproj", "{2F33730B-AC77-40C4-8D56-DCCC4E9C7B05}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RideService", "RideService\RideService.csproj", "{71ABD43E-9535-4FB8-A307-7D9B7478F75B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RideModel", "RideModel\RideModel.csproj", "{13549308-DF02-4AEF-A491-6EBAB1FB3DEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +79,22 @@ Global
 		{2F33730B-AC77-40C4-8D56-DCCC4E9C7B05}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2F33730B-AC77-40C4-8D56-DCCC4E9C7B05}.Release|x64.ActiveCfg = Release|Any CPU
 		{2F33730B-AC77-40C4-8D56-DCCC4E9C7B05}.Release|x64.Build.0 = Release|Any CPU
+		{71ABD43E-9535-4FB8-A307-7D9B7478F75B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71ABD43E-9535-4FB8-A307-7D9B7478F75B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71ABD43E-9535-4FB8-A307-7D9B7478F75B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{71ABD43E-9535-4FB8-A307-7D9B7478F75B}.Debug|x64.Build.0 = Debug|Any CPU
+		{71ABD43E-9535-4FB8-A307-7D9B7478F75B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71ABD43E-9535-4FB8-A307-7D9B7478F75B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71ABD43E-9535-4FB8-A307-7D9B7478F75B}.Release|x64.ActiveCfg = Release|Any CPU
+		{71ABD43E-9535-4FB8-A307-7D9B7478F75B}.Release|x64.Build.0 = Release|Any CPU
+		{13549308-DF02-4AEF-A491-6EBAB1FB3DEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13549308-DF02-4AEF-A491-6EBAB1FB3DEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13549308-DF02-4AEF-A491-6EBAB1FB3DEF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{13549308-DF02-4AEF-A491-6EBAB1FB3DEF}.Debug|x64.Build.0 = Debug|Any CPU
+		{13549308-DF02-4AEF-A491-6EBAB1FB3DEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13549308-DF02-4AEF-A491-6EBAB1FB3DEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13549308-DF02-4AEF-A491-6EBAB1FB3DEF}.Release|x64.ActiveCfg = Release|Any CPU
+		{13549308-DF02-4AEF-A491-6EBAB1FB3DEF}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

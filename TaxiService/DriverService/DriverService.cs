@@ -103,6 +103,21 @@ namespace DriverService
             return "Driver rejected!";
         }
 
+        public async Task<string> RateDriver(int id, int rating)
+        {
+            var driver = await _dbContext.Drivers.FindAsync(id);
+
+            if(driver == null)
+            {
+                return "Driver not found";
+            }
+            driver.NumberOfRatings++;
+            driver.Rating += rating;
+            await _dbContext.SaveChangesAsync();
+
+            return "Driver rated";
+        }
+
         /// <summary>
         /// Optional override to create listeners (e.g., HTTP, Service Remoting, WCF, etc.) for this service replica to handle client or user requests.
         /// </summary>

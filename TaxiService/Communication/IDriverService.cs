@@ -11,5 +11,7 @@ namespace Communication
         Task<string> ApproveDriver(int id);
         Task<string> RejectDriver(int id);
 
+        Task<string> RateDriver(int id, int rating);
+
     }
 }

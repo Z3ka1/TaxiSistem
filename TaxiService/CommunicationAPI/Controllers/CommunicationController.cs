@@ -1,4 +1,5 @@
 using Communication;
+using CommunicationAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.ServiceFabric.Services.Remoting.Client;
 
@@ -102,5 +103,150 @@ namespace CommunicationAPI.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("createRide")]
+        public async Task<IActionResult> CreateRide([FromBody] RideRequest request)
+        {
+            var statelessProxy = ServiceProxy.Create<IRideService>(
+                new Uri("fabric:/TaxiService/RideService"));
+
+            var response = await statelessProxy.CreateRide(request.UserId, request.StartAddress, request.EndAddress, request.Price, request.WaitTime);
+
+            var (rideId, message) = response;
+
+            if (message == "Ride created!")
+                return Ok(new
+                {
+                    rideId,
+                    message
+                });
+            else
+                return StatusCode(500, new { message });
+        }
+
+        [HttpGet]
+        [Route("rideStatus/{rideId}")]
+        public async Task<IActionResult> GetRideStatus(int rideId)
+        {
+            var statelessProxy = ServiceProxy.Create<IRideService>(
+                new Uri("fabric:/TaxiService/RideService"));
+
+            var response = await statelessProxy.GetRideStatus(rideId);
+
+            if (response == "Ride not found")
+                return NotFound(new { message = response });
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("acceptRide/{rideId}")]
+        public async Task<IActionResult> AcceptRide(int rideId, [FromBody] int driverId)
+        {
+            var statelessProxy = ServiceProxy.Create<IRideService>(
+                new Uri("fabric:/TaxiService/RideService"));
+
+            var response = await statelessProxy.SetRideStatusAccepted(rideId, driverId);
+
+            if (response == "Ride not found")
+                return NotFound(new { message = response });
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("setRideOngoing/{rideId}")]
+        public async Task<IActionResult> SetRideOngoing(int rideId)
+        {
+            var statelessProxy = ServiceProxy.Create<IRideService>(
+                new Uri("fabric:/TaxiService/RideService"));
+
+            var response = await statelessProxy.SetRideStatusOngoing(rideId);
+
+            if (response == "Ride not found")
+                return NotFound(new { message = response });
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("setRideCompleted/{rideId}")]
+        public async Task<IActionResult> SetRideCompleted(int rideId)
+        {
+            var statelessProxy = ServiceProxy.Create<IRideService>(
+                new Uri("fabric:/TaxiService/RideService"));
+
+            var response = await statelessProxy.SetRideStatusCompleted(rideId);
+
+            if (response == "Ride not found")
+                return NotFound(new { message = response });
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("getCreatedRides")]
+        public async Task<IActionResult> GetCreatedRides()
+        {
+            var statelessProxy = ServiceProxy.Create<IRideService>(
+                new Uri("fabric:/TaxiService/RideService"));
+
+            var response = await statelessProxy.GetAllCreatedRides();
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("getEstimatedDrive/{rideId}")]
+        public async Task<IActionResult> GetEstimatedDrive(int rideId)
+        {
+            var statelessProxy = ServiceProxy.Create<IRideService>(
+                new Uri("fabric:/TaxiService/RideService"));
+
+            var response = await statelessProxy.GetEstimatedDrive(rideId);
+
+            if(response == -1)
+            {
+                return NotFound(new { message = "Estimated drive not available" });
+            }
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("getEstimatedDriveAndDriverId/{rideId}")]
+        public async Task<IActionResult> GetEstimatedDriveAndDriverId(int rideId)
+        {
+            var statelessProxy = ServiceProxy.Create<IRideService>(
+                new Uri("fabric:/TaxiService/RideService"));
+
+            var (time, driverId) = await statelessProxy.GetEstimatedDriveAndDriverId(rideId);
+        
+            if (time == -1 || driverId == -1)
+            {
+                return NotFound(new { message = "Estimated drive or driverId not available" });
+            }
+
+            return Ok(new { Time = time, DriverId = driverId });
+        }
+
+        [HttpPost]
+        [Route("rateDriver/{driverId}")]
+        public async Task<IActionResult> RateDriver(int driverId, [FromBody] int rating)
+        {
+            var partitionId = driverId % 1;
+
+            var statefulProxy = ServiceProxy.Create<IDriverService>(
+                new Uri("fabric:/TaxiService/DriverService"),
+                new Microsoft.ServiceFabric.Services.Client.ServicePartitionKey(partitionId));
+
+            var response = await statefulProxy.RateDriver(driverId, rating);
+
+            if (response == "Driver not found")
+            {
+                return NotFound(new { message = response });
+            }
+
+            return Ok(new { message = response });
+        }
     }
 }
