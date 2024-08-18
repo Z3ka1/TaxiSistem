@@ -18,5 +18,13 @@ namespace Communication
         Task<List<Ride>> GetAllCreatedRides();
         Task<int> GetEstimatedDrive(int rideId);
         Task<(int time, int driverId)> GetEstimatedDriveAndDriverId(int rideId);
+        
+        //Sve voznje koje je inicirao userId
+        Task<List<Ride>> GetPreviousRides(int userId);
+
+        //Sve voznje koje je vozio userId
+        Task<List<Ride>> GetPreviousDrives(int driverId);
+        Task<List<Ride>> GetAllRides();
+
     }
 }

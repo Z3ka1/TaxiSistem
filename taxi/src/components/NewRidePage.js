@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
- 
+ import './../styles/newRidePage.css';
+
 const NewRidePage = () => {
     const [startAddress, setStartAddress] = useState('');
     const [endAddress, setEndAddress] = useState('');
@@ -131,128 +132,81 @@ const NewRidePage = () => {
     };
  
     if (error) {
-        return <div>Error: {error}</div>;
+        return <div className="error">Error: {error}</div>;
     }
 
     if (!isOrderClicked) {
         return (
-        <div>
-            <h2>Create a New Ride</h2>
+        <div className="container">
+            <h2 className="heading">Create a New Ride</h2>
             <input
                 type="text"
+                className="input"
                 placeholder="Start Address"
                 value={startAddress}
-                onChange={(e) => setStartAddress(e.target.value)}
-            />
+                onChange={(e) => setStartAddress(e.target.value)}/>
             <input
                 type="text"
+                className="input"
                 placeholder="End Address"
                 value={endAddress}
-                onChange={(e) => setEndAddress(e.target.value)}
-            />
-            <button onClick={handleOrderClick}>Order</button>
+                onChange={(e) => setEndAddress(e.target.value)}/>
+                <br/>
+            <button className="button button-order" onClick={handleOrderClick}>Order</button>
         </div>
         );
     }
 
     if (!isRideCreated) {
         return (
-            <div>
-                    <h2>Confirm Ride</h2>
-                    <p>Start: {startAddress}</p>
-                    <p>End: {endAddress}</p>
-                    <p>Price: {price}</p>
-                    <p>Estimated Wait: {waitTime} seconds</p>
-                    <button onClick={handleConfirmClick}>Confirm</button>
-                </div>
+            <div className="container">
+                    <h2 className="subheading">Confirm Ride</h2>
+                    <p className="details">Start: {startAddress}</p>
+                    <p className="details">End: {endAddress}</p>
+                    <p className="details">Price: {price}</p>
+                    <p className="details">Estimated Wait: {waitTime} seconds</p>
+                    <button className="button button-confirm" onClick={handleConfirmClick}>Confirm</button>
+            </div>
         );
     }
 
     if(!isRideAccepted) {
         return (
-            <div>Ride created successfully! Waiting for driver to accept your ride...</div>
+            <div className="container">Ride created successfully! Waiting for driver to accept your ride...</div>
         );
     }
 
     if(!isRatingVisible && !isWaitingFinished) {
         return (
-            <div>
-                <h3>Driver arriving in: {countdown} seconds</h3>
+            <div className="container">
+                <h3 className="countdown">Driver arriving in: {countdown} seconds</h3>
             </div>
         );
     }
 
     if(!isRatingVisible && isWaitingFinished) {
         return (
-            <div>
-                <h3>Arriving to the destination in: {countdown} seconds</h3>
+            <div className="container">
+                <h3 className="countdown">Arriving to the destination in: {countdown} seconds</h3>
             </div>
         );
     }
 
     return (
-        <div>
-            <h2>Rate Your Driver</h2>
+        <div className="container">
+            <h2 className="subheading">Rate Your Driver</h2>
             <input
                 type="number"
                 min="1"
                 max="5"
+                className="rating-input"
                 value={rating}
-                onChange={(e) => setRating(e.target.value)}
-            />
-            <button onClick={handleRatingSubmit}>Submit Rating</button>
+                onChange={(e) => setRating(e.target.value)}/>
+                <br/>
+            <button className="button button-rate" onClick={handleRatingSubmit}>Submit Rating</button>
         </div>
     );
- 
-    // return (
-    //     <div>
-    //         {!isOrderClicked ? (
-    //             <div>
-    //                 <h2>Create a New Ride</h2>
-    //                 <input
-    //                     type="text"
-    //                     placeholder="Start Address"
-    //                     value={startAddress}
-    //                     onChange={(e) => setStartAddress(e.target.value)}
-    //                 />
-    //                 <input
-    //                     type="text"
-    //                     placeholder="End Address"
-    //                     value={endAddress}
-    //                     onChange={(e) => setEndAddress(e.target.value)}
-    //                 />
-    //                 <button onClick={handleOrderClick}>Order</button>
-    //             </div>
-    //         ) : !isRideCreated ? (
-    //             <div>
-    //                 <h2>Confirm Ride</h2>
-    //                 <p>Start: {startAddress}</p>
-    //                 <p>End: {endAddress}</p>
-    //                 <p>Price: {price}</p>
-    //                 <p>Estimated Wait: {waitTime} seconds</p>
-    //                 <button onClick={handleConfirmClick}>Confirm</button>
-    //             </div>
-    //         ) : !isRideAccepted ? (
-    //             <div>Ride created successfully! Waiting for driver to accept your ride...</div>
-    //         ) : !isRatingVisible ? (
-    //             <div>
-    //                 <h3>Drive in progress: {countdown} seconds</h3>
-    //             </div>
-    //         ) : (
-    //             <div>
-    //                 <h2>Rate Your Driver</h2>
-    //                 <input
-    //                     type="number"
-    //                     min="1"
-    //                     max="5"
-    //                     value={rating}
-    //                     onChange={(e) => setRating(e.target.value)}
-    //                 />
-    //                 <button onClick={handleRatingSubmit}>Submit Rating</button>
-    //             </div>
-    //         )}
-    //     </div>
-    // );
+    
 };
  
 export default NewRidePage;

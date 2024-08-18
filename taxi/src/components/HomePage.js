@@ -23,6 +23,7 @@ const HomePage = () => {
         : (<p>Welcome to taxi application. Please log in or register.</p>)}
       </div>
     );
+
   };
   
   export default HomePage;

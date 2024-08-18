@@ -118,6 +118,28 @@ namespace DriverService
             return "Driver rated";
         }
 
+        public async Task<string> GetVerificationStatus(int id)
+        {
+            var driver = await _dbContext.Drivers.FindAsync(id);
+
+            if(driver ==null)
+            {
+                return "Driver not found";
+            }
+
+            switch (driver.Status)
+            {
+                case VerificationStatus.Pending:
+                    return "Pending";
+                case VerificationStatus.Approved:
+                    return "Approved";
+                case VerificationStatus.Rejected:
+                    return "Rejected";
+                default:
+                    return "Pending";
+            }
+        }
+
         /// <summary>
         /// Optional override to create listeners (e.g., HTTP, Service Remoting, WCF, etc.) for this service replica to handle client or user requests.
         /// </summary>

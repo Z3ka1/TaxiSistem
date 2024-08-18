@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
- 
+import './../styles/createdRidesPage.css'; 
+
 const CreatedRidesPage = () => {
     const [rides, setRides] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -57,14 +58,14 @@ const CreatedRidesPage = () => {
             setRides([]);
             setIsCountdownVisible(true);
             startCountdown(estimatedWait, () => {
-                //fetch za ongoing
+                //fetch for ongoing
                 updateRideStatusToOngoing(rideId);
                 setIsCountdownVisible(false);
                 setIsDriveCountdownVisible(true);
                 // Start the drive countdown after the wait countdown finishes
                 startCountdown(estimatedDrive, () => {
                     setIsDriveCountdownVisible(false);
-                    //fetch za complete
+                    //fetch for complete
                     updateRideStatusToCompleted(rideId);
                     // Refresh the page after the drive countdown ends
                     window.location.reload();
@@ -128,35 +129,35 @@ const CreatedRidesPage = () => {
         }
     };
  
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
- 
+    if (loading) return <div className="created-rides-loading">Loading...</div>;
+    if (error) return <div className="created-rides-error">Error: {error}</div>;
+
     if (isCountdownVisible) {
         return (
-            <div>
+            <div className="created-rides-countdown">
                 <h3>Passenger pick up in: {countdown} seconds</h3>
             </div>
         );
     }
- 
+
     if (isDriveCountdownVisible) {
         return (
-            <div>
+            <div className="created-rides-countdown">
                 <h3>Arriving to the destination in: {countdown} seconds</h3>
             </div>
         );
     }
- 
+
     return (
-        <div>
-            <h2>Created Rides</h2>
+        <div className="created-rides-container">
+            <h2 className="created-rides-header">Created Rides</h2>
             {rides.length > 0 ? (
-                <ul>
+                <ul className="created-rides-list">
                     {rides.map((ride) => (
                         <li key={ride.rideID}>
                             <p>Ride from {ride.startLocation} to {ride.endLocation}</p>
-                            <p>Estimated wait: {ride.estimatedWait}</p>
-                            <button onClick={() => handleAcceptClick(ride.rideID, ride.estimatedWait)}>Accept</button>
+                            <p>Estimated passenger pick up in: {ride.estimatedWait}</p>
+                            <button className="created-rides-button" onClick={() => handleAcceptClick(ride.rideID, ride.estimatedWait)}>Accept</button>
                         </li>
                     ))}
                 </ul>

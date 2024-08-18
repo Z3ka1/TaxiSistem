@@ -1,4 +1,5 @@
 ﻿using Microsoft.ServiceFabric.Services.Remoting;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace Communication
 {
@@ -12,6 +13,7 @@ namespace Communication
         Task<string> RejectDriver(int id);
 
         Task<string> RateDriver(int id, int rating);
+        Task<string> GetVerificationStatus(int id);
 
     }
 }

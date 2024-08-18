@@ -248,5 +248,59 @@ namespace CommunicationAPI.Controllers
 
             return Ok(new { message = response });
         }
+
+        [HttpGet]
+        [Route("getPreviousRides/{userId}")]
+        public async Task<IActionResult> GetPreviousRides(int userId)
+        {
+            var statelessProxy = ServiceProxy.Create<IRideService>(
+                new Uri("fabric:/TaxiService/RideService"));
+
+            var response = await statelessProxy.GetPreviousRides(userId);
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("getPreviousDrives/{driverId}")]
+        public async Task<IActionResult> GetPreviousDrives(int driverId)
+        {
+            var statelessProxy = ServiceProxy.Create<IRideService>(
+                new Uri("fabric:/TaxiService/RideService"));
+
+            var response = await statelessProxy.GetPreviousDrives(driverId);
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("getVerificationStatus/{driverId}")]
+        public async Task<IActionResult> GetVerificationStatus(int driverId)
+        {
+            var partitionId = driverId % 1;
+
+            var statefulProxy = ServiceProxy.Create<IDriverService>(
+                new Uri("fabric:/TaxiService/DriverService"),
+                new Microsoft.ServiceFabric.Services.Client.ServicePartitionKey(partitionId));
+
+            var response = await statefulProxy.GetVerificationStatus(driverId);
+
+            if (response == "Driver not found")
+                return NotFound(response);
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("getAllRides")]
+        public async Task<IActionResult> GetAllRides()
+        {
+            var statelessProxy = ServiceProxy.Create<IRideService>(
+                new Uri("fabric:/TaxiService/RideService"));
+
+            var response = await statelessProxy.GetAllRides();
+
+            return Ok(response);
+        }
     }
 }

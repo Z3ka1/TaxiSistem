@@ -24,13 +24,16 @@ const Navbar = () => {
     <nav className="navbar">
       <h1>Taksi sistem</h1>
       <div className="links">
-        <Link to="/">Pocetna</Link>
-        {user == null && (<Link to="/login">Prijava</Link>)}
-        {user == null && (<Link to="/register">Registracija</Link>)}
+        <Link to="/">Home</Link>
+        {user == null && (<Link to="/login">Log in</Link>)}
+        {user == null && (<Link to="/register">Register</Link>)}
         {user && (<Link to="/profile">Profile</Link>)}
-        {user != null && user.userType == 0 && (<Link to ="/verification">Driver Verification</Link>)}
-        {user != null && user.userType == 1 && (<Link to ="/newRide">New ride</Link>)}
-        {user != null && user.userType == 2 && (<Link to = "/createdRides">Find ride</Link>)}
+        {user != null && user.userType === 0 && (<Link to ="/verification">Driver Verification</Link>)}
+        {user != null && user.userType === 0 && (<Link to ="/allRides">All Rides</Link>)}
+        {user != null && user.userType === 1 && (<Link to ="/newRide">New ride</Link>)}
+        {user != null && user.userType === 1 && (<Link to ="/previousRides">Previous rides</Link>)}
+        {user != null && user.userType === 2 && (<Link to = "/createdRides">Find ride</Link>)}
+        {user != null && user.userType === 2 && (<Link to ="/myDrives">My Drives</Link>)}
 
         {user && (<button class='logout' onClick={handleLogout}>Logout</button>)}
       </div>

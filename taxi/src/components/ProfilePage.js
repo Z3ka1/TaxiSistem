@@ -6,6 +6,7 @@ const ProfilePage = () => {
   const [editMode, setEditMode] = useState(false);
   const [editUserData, setEditUserData] = useState({});
   const [message, setMessage] = useState('');
+  const [driverVerificationStatus, setDriverVerificationStatus] = useState("Pending");
   const navigate = useNavigate();
 
   //Ulogovani user 
@@ -20,6 +21,9 @@ const ProfilePage = () => {
 
     //setuje u current user ulogovanog
     const storedUser = JSON.parse(sessionStorage.getItem('user'));
+
+    if(storedUser.userType === 2)
+      fetchDriverVerificationStatus(storedUser.id)
 
     if(storedUser)
     {
@@ -53,6 +57,21 @@ const ProfilePage = () => {
     console.log('Updated userData: ', userData);
   }, [userData]);
 
+  const fetchDriverVerificationStatus = async (driverId) => {
+    try
+    {
+        const response = await fetch(`http://localhost:8246/communication/getVerificationStatus/${driverId}`);
+
+        if(!response.ok) {
+            throw new Error('Failed to update ride status to ongoing');
+        }
+        const data = await response.text();
+        setDriverVerificationStatus(data);
+
+    } catch(err) {
+        setMessage(err.message);
+    }
+};
 
   const handleInputChange = (e) => {
     setEditUserData({ ...editUserData, [e.target.name]: e.target.value });
@@ -125,6 +144,7 @@ const ProfilePage = () => {
       {!editMode && ( userData ? (
       <div className='user-details'>
         <h1 className='profile-update-heading'>Profile overview</h1>
+        {currentUser.userType === 2 && <p><strong>Verification status:</strong> {driverVerificationStatus}</p>}
         <p><strong>First name:</strong> {userData.firstName}</p>
         <p><strong>Last name:</strong> {userData.lastName}</p>
         <p><strong>Address:</strong> {userData.address}</p>

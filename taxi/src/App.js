@@ -9,6 +9,9 @@ import ProfilePage from './components/ProfilePage';
 import VerificationPage from './components/VerificationPage';
 import NewRidePage from './components/NewRidePage';
 import CreatedRidesPage from './components/CreatedRidesPage';
+import PreviousRidesPage from './components/PreviousRidesPage';
+import MyDrivesPage from './components/MyDrivesPage';
+import AllRidesPage from './components/AllRidesPage';
 
 function App() {
   return (
@@ -24,6 +27,9 @@ function App() {
             <Route path="/verification" element = {<VerificationPage />} />
             <Route path="/newRide" element = {<NewRidePage/>}/>
             <Route path ="/createdRides" element = {<CreatedRidesPage/>}/>
+            <Route path ="/previousRides" element ={<PreviousRidesPage/>}/>
+            <Route path = "/myDrives" element ={<MyDrivesPage/>}/>
+            <Route path = "/allRides" element = {<AllRidesPage/>} />
           </Routes>
         </div>
       </div>

@@ -1,0 +1,49 @@
+.previous-rides-page {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.previous-rides-page h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.previous-rides-page ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.previous-rides-page li {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
+
+.previous-rides-page li p {
+    margin: 5px 0;
+}
+
+.previous-rides-page .ride-info {
+    font-size: 16px;
+    color: #333;
+}
+
+.previous-rides-page .ride-price {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.previous-rides-page .ride-duration {
+    font-style: italic;
+    color: #666;
+}
+
+.previous-rides-page .loading,
+.previous-rides-page .error {
+    font-size: 18px;
+    color: #ff0000;
+    text-align: center;
+    margin-top: 20px;
+}

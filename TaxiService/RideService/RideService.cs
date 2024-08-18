@@ -167,8 +167,24 @@ namespace RideService
             return (time, driverId);
         }
 
+        public async Task<List<Ride>> GetPreviousRides(int userId)
+        {
+            var previousRides = await _dbContext.Rides.Where(r => r.UserID == userId).ToListAsync();
+            return previousRides;
+        }
 
+        public async Task<List<Ride>> GetPreviousDrives(int driverId)
+        {
+            var previousDrives = await _dbContext.Rides.Where(r => r.DriverID == driverId).ToListAsync();
+            return previousDrives;
+        }
 
+        public async Task<List<Ride>> GetAllRides()
+        {
+            var allRides = await _dbContext.Rides.ToListAsync();
+
+            return allRides;
+        }
 
         /// <summary>
         /// Optional override to create listeners (e.g., TCP, HTTP) for this service replica to handle client or user requests.
