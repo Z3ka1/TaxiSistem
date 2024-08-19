@@ -16,10 +16,19 @@ const NewRidePage = () => {
     const [rating, setRating] = useState(null);
     const [driverId, setDriverId] = useState(null);
     const [isWaitingFinished, setIsWaitingFinished] = useState(false);
+
+    const communicationServiceUrl = process.env.REACT_APP_COMMUNICATION_SERVICE_URL;
  
     const user = JSON.parse(sessionStorage.getItem("user"));
  
     useEffect(() => {
+        const storedUser = JSON.parse(sessionStorage.getItem("user"));
+
+        if(!storedUser || storedUser.userType !== 1) {
+            window.location.href = '/';
+            return;
+        }
+
         if (user) {
             console.log('Logged in as: ' + user.username);
         }
@@ -44,7 +53,7 @@ const NewRidePage = () => {
         };
  
         try {
-            const response = await fetch('http://localhost:8246/communication/createRide', {
+            const response = await fetch(`${communicationServiceUrl}/createRide`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -67,7 +76,7 @@ const NewRidePage = () => {
  
     const pollForRideAcceptance = async (id) => {
         const intervalId = setInterval(async () => {
-            const response = await fetch(`http://localhost:8246/communication/rideStatus/${id}`);
+            const response = await fetch(`${communicationServiceUrl}/rideStatus/${id}`);
             const status = await response.text();
             if (status === "Accepted") {
                 clearInterval(intervalId);
@@ -82,7 +91,7 @@ const NewRidePage = () => {
  
     const fetchDriveTime = async (rideId) => {
         try {
-            const response = await fetch(`http://localhost:8246/communication/getEstimatedDriveAndDriverId/${rideId}`);
+            const response = await fetch(`${communicationServiceUrl}/getEstimatedDriveAndDriverId/${rideId}`);
             const data = await response.json();
             setDriverId(data.driverId);
 
@@ -113,7 +122,7 @@ const NewRidePage = () => {
  
     const handleRatingSubmit = async () => {
         try {
-            const response = await fetch(`http://localhost:8246/communication/rateDriver/${driverId}`, {
+            const response = await fetch(`${communicationServiceUrl}/rateDriver/${driverId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

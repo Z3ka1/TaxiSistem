@@ -5,12 +5,27 @@ const MyDrivesPage = () => {
     const [rides, setRides] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const user = JSON.parse(sessionStorage.getItem("user"));
+    const [user,setUser] = useState(null);
+
+    const communicationServiceUrl = process.env.REACT_APP_COMMUNICATION_SERVICE_URL;
+
+    //const user = JSON.parse(sessionStorage.getItem("user"));
+    useEffect(() => {
+        const storedUser = JSON.parse(sessionStorage.getItem("user"));
+        setUser(storedUser);
+    }, []);
 
     useEffect(() => {
+
+        if(user && (user.userType !== 2 || user.verificationStatus !== 'Approved')){
+            window.location.href = '/';
+            return;
+        }
+
         const fetchRides = async () => {
+            if(!user) return;
             try {
-                const response = await fetch(`http://localhost:8246/communication/getPreviousDrives/${user.id}`);
+                const response = await fetch(`${communicationServiceUrl}/getPreviousDrives/${user.id}`);
                 if (!response.ok) {
                     throw new Error(`Error: ${response.statusText}`);
                 }
@@ -24,7 +39,7 @@ const MyDrivesPage = () => {
         };
 
         fetchRides();
-    }, [user.id]);
+    }, [user,communicationServiceUrl]);
 
     if (loading) return <div className="loading">Loading...</div>;
     if (error) return <div className="error">Error: {error}</div>;

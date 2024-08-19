@@ -1,5 +1,6 @@
 ﻿using DriverService.Models;
 using Microsoft.EntityFrameworkCore;
+using SharedModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

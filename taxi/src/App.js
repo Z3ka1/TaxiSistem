@@ -12,6 +12,7 @@ import CreatedRidesPage from './components/CreatedRidesPage';
 import PreviousRidesPage from './components/PreviousRidesPage';
 import MyDrivesPage from './components/MyDrivesPage';
 import AllRidesPage from './components/AllRidesPage';
+import DriverRatingsPage from './components/DriverRatingsPage';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route path ="/previousRides" element ={<PreviousRidesPage/>}/>
             <Route path = "/myDrives" element ={<MyDrivesPage/>}/>
             <Route path = "/allRides" element = {<AllRidesPage/>} />
+            <Route path = "/driverRatings" element = {<DriverRatingsPage/>} />
           </Routes>
         </div>
       </div>

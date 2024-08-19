@@ -12,6 +12,7 @@ using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Remoting.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
+using SharedModels;
 
 namespace DriverService
 {
@@ -138,6 +139,42 @@ namespace DriverService
                 default:
                     return "Pending";
             }
+        }
+
+        public async Task<List<Driver>> GetAllDrivers()
+        {
+            var drivers = await _dbContext.Drivers.ToListAsync();
+
+            return drivers;
+        }
+
+        public async Task<string> BlockDriver(int id)
+        {
+            var driver = await _dbContext.Drivers.FindAsync(id);
+
+            if(driver == null)
+            {
+                return "Driver not found";
+            }
+
+            driver.Status = VerificationStatus.Blocked;
+            await _dbContext.SaveChangesAsync();
+            return "Driver blocked";
+        }
+
+        public async Task<string> UnblockDriver(int id)
+        {
+            var driver = await _dbContext.Drivers.FindAsync(id);
+
+            if (driver == null)
+            {
+                return "Driver not found";
+            }
+
+            driver.Status = VerificationStatus.Approved;
+            await _dbContext.SaveChangesAsync();
+
+            return "Driver UNblocked";
         }
 
         /// <summary>

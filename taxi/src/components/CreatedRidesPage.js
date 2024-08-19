@@ -8,12 +8,29 @@ const CreatedRidesPage = () => {
     const [countdown, setCountdown] = useState(null);
     const [isCountdownVisible, setIsCountdownVisible] = useState(false);
     const [isDriveCountdownVisible, setIsDriveCountdownVisible] = useState(false);
-    const user = JSON.parse(sessionStorage.getItem("user"));
- 
+    const [user,setUser] = useState(null);
+    const communicationServiceUrl = process.env.REACT_APP_COMMUNICATION_SERVICE_URL;
+
+//    const user = JSON.parse(sessionStorage.getItem("user"));
+
     useEffect(() => {
+        const storedUser = JSON.parse(sessionStorage.getItem("user"));
+        setUser(storedUser);
+    }, []);
+
+
+    useEffect(() => {
+        
+        if(user && (user.userType !== 2 || user.verificationStatus !== "Approved"))
+        {
+            window.location.href = '/';
+            return;
+        }
+
         const fetchRides = async () => {
+            if(!user) return;
             try {
-                const response = await fetch('http://localhost:8246/communication/getCreatedRides');
+                const response = await fetch(`${communicationServiceUrl}/getCreatedRides`);
                 if (!response.ok) {
                     throw new Error(`Error: ${response.statusText}`);
                 }
@@ -27,13 +44,13 @@ const CreatedRidesPage = () => {
         };
  
         fetchRides();
-    }, []);
+    }, [user, communicationServiceUrl]);
  
     const handleAcceptClick = async (rideId, estimatedWait) => {
         try {
             const userId = user.id;
 
-            const response = await fetch(`http://localhost:8246/communication/acceptRide/${rideId}`, {
+            const response = await fetch(`${communicationServiceUrl}/acceptRide/${rideId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -45,7 +62,7 @@ const CreatedRidesPage = () => {
                 throw new Error('Failed to accept the ride');
             }
  
-            const response2 = await fetch(`http://localhost:8246/communication/getEstimatedDrive/${rideId}`);
+            const response2 = await fetch(`${communicationServiceUrl}/getEstimatedDrive/${rideId}`);
  
             if (!response2.ok) {
                 throw new Error('Failed to get estimated drive');
@@ -94,7 +111,7 @@ const CreatedRidesPage = () => {
     const updateRideStatusToOngoing = async (rideId) => {
         try
         {
-            const response = await fetch(`http://localhost:8246/communication/setRideOngoing/${rideId}`,{
+            const response = await fetch(`${communicationServiceUrl}/setRideOngoing/${rideId}`,{
                 method: 'POST',
                 headers: {
                     'Content-Type' : 'application/json'
@@ -113,7 +130,7 @@ const CreatedRidesPage = () => {
     const updateRideStatusToCompleted= async (rideId) => {
         try
         {
-            const response = await fetch(`http://localhost:8246/communication/setRideCompleted/${rideId}`,{
+            const response = await fetch(`${communicationServiceUrl}/setRideCompleted/${rideId}`,{
                 method: 'POST',
                 headers: {
                     'Content-Type' : 'application/json'

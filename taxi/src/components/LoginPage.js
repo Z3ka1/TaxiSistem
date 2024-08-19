@@ -6,44 +6,76 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [loginError, setLoginError] = useState(false);
   
+    const authenticationServiceUrl = process.env.REACT_APP_AUTHENTICATION_SERVICE_URL;
+    const communicationServiceUrl = process.env.REACT_APP_COMMUNICATION_SERVICE_URL;
   
-    const handleLogin = (event) => {
+  
+    const handleLogin = async (event) => {
       event.preventDefault();
-  
-      fetch('http://localhost:8553/authentication/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password })
-      })
-        .then((res) =>{ 
-          if(!res.ok) {
-            throw new Error('Invalid username or password');
-          }
-
-          return res.json()
-        })
-        .then((data) => {
-         
-          if (data.user) {
-            // Ako server vrati korisnika, sačuvaj podatke korisnika u lokalnom skladištu
-            sessionStorage.setItem('user', JSON.stringify(data.user));
-            console.log(data)
-            window.location.href = '/';
-          } else {
-            setLoginError(true);
-          }
-        })
-        .catch((error) => {
-          setLoginError(true);
-          console.log(error);
+    console.log(process.env.REACT_APP_AUTHENTICATION_SERVICE_URL);
+      try {
+        const res = await fetch(`${authenticationServiceUrl}/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username, password })
         });
+    
+        if (!res.ok) {
+          throw new Error('Invalid username or password');
+        }
+    
+        const data = await res.json();
+    
+        if (data.user) {
+          let userWithExtraInfo = { ...data.user };
+    
+          if (data.user.userType === 2) {
+            
+            const verificationStatus = await getDriverVerificationStatus(data.user.id);
+    
+            userWithExtraInfo = {
+              ...data.user,
+              verificationStatus: verificationStatus
+            };
+          }
+    
+          sessionStorage.setItem('user', JSON.stringify(userWithExtraInfo));
+          console.log(data);
+          console.log(userWithExtraInfo);
+          window.location.href = '/';
+        } else {
+          setLoginError(true);
+        }
+      } catch (error) {
+        setLoginError(true);
+        console.log(error);
+      }
     };
+    
   
+
+    const getDriverVerificationStatus = async (userId) => {
+      try {
+        const response = await fetch(`${communicationServiceUrl}/getVerificationStatus/${userId}`);
+    
+        if (!response.ok) {
+          throw new Error('Failed to get verification status');
+        }
+    
+        const data = await response.text();
+        return data;
+      } catch (err) {
+        setLoginError(err.message);
+        return null; 
+      }
+    };
+    
+
     return (
       <div className='login-div'>
-        <h2 className='header-login'>Prijava korisnika</h2>
+        <h2 className='header-login'>Log in page</h2>
         <form className='form-login' onSubmit={handleLogin}>
           <label className='label-login'>
             Username:
@@ -56,7 +88,7 @@ const LoginPage = () => {
           </label>
           <br />
           <label className='label-login'> 
-            Lozinka: 
+            Password: 
             <input 
               type="password"
               value={password}
@@ -65,8 +97,8 @@ const LoginPage = () => {
             />
           </label>
           <br />
-          <button className='button-login' type="submit">Prijavi se</button>
-          {loginError && <p style={{ color: 'red' }}>Pogrešno korisničko ime ili lozinka.</p>}
+          <button className='button-login' type="submit">Sign in</button>
+          {loginError && <p style={{ color: 'red' }}>Wrong username or password.</p>}
         </form>
       </div>
     );

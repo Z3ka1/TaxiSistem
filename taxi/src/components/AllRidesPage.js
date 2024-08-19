@@ -7,10 +7,19 @@ const AllRidesPage = () => {
     const [error, setError] = useState(null);
     const user = JSON.parse(sessionStorage.getItem("user"));
 
+    const communicationServiceUrl = process.env.REACT_APP_COMMUNICATION_SERVICE_URL;
+
     useEffect(() => {
+        const storedUser = JSON.parse(sessionStorage.getItem("user"));
+
+        if(!storedUser || storedUser.userType !== 0) {
+            window.location.href = '/';
+            return;
+        }
+
         const fetchRides = async () => {
             try {
-                const response = await fetch(`http://localhost:8246/communication/getAllRides`);
+                const response = await fetch(`${communicationServiceUrl}/getAllRides`);
                 if (!response.ok) {
                     throw new Error(`Error: ${response.statusText}`);
                 }
@@ -24,7 +33,7 @@ const AllRidesPage = () => {
         };
 
         fetchRides();
-    }, [user.id]);
+    }, [user, communicationServiceUrl]);
 
     const statusMap = {
         0: 'Created',

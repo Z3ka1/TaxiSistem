@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using ProfileService.Data;
 using ProfileService.DTOs;
 using ProfileService.Models;
+using System.Net.Mail;
+using System.Net;
+using Microsoft.EntityFrameworkCore.Storage.Json;
 
 namespace ProfileService.Controllers
 {
@@ -126,6 +129,11 @@ namespace ProfileService.Controllers
 
             var ids = await response.Content.ReadFromJsonAsync<List<int>>();
 
+            if(ids == null)
+            {
+                return NotFound("No profiles found with provided IDs.");
+            }
+
             var profiles = _dbContext.Profiles
                 .Where(p => ids.Contains(p.Id))
                 .ToList();
@@ -137,6 +145,54 @@ namespace ProfileService.Controllers
 
             return Ok(profiles);
         }
+
+        [HttpPost("sendEmail")]
+        public async Task<IActionResult> SendEmail([FromBody] int id)
+        {
+            bool isSent = true;
+            var profile = _dbContext.Profiles.FirstOrDefault(p => p.Id == id); ;
+
+            if (profile == null)
+                return NotFound(new {message = "Email failed to send, profile not found"});
+
+            //isSent = SendEmail(profile.Email, "Taxi system", "Your driver profile is successfully approved! Now you can start driving for our company.");
+
+            if(!isSent)
+                return StatusCode(500, new { message = "Email unable to send" });
+            return Ok(new {message = "Email sent"});
+        }
+
+        public bool SendEmail(string toAddress, string subject, string body)
+        {
+            try
+            {
+                using (SmtpClient smtpClient = new SmtpClient("smtp.office365.com", 587))
+                {
+                    smtpClient.Credentials = new NetworkCredential("sistemrazmene@outlook.com", "razmenanovca123");
+                    smtpClient.EnableSsl = true;
+
+                    MailMessage mailMessage = new MailMessage
+                    {
+                        From = new MailAddress("sistemrazmene@outlook.com"),
+                        Subject = subject,
+                        Body = body,
+                        IsBodyHtml = false
+                    };
+
+                    mailMessage.To.Add(toAddress);
+
+                    smtpClient.Send(mailMessage);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred while sending the email: " + ex.Message);
+                return false;
+            }
+        }
+
 
     }
 }

@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RideModel\RideModel.csproj" />
+    <ProjectReference Include="..\RideModel\SharedModels.csproj" />
   </ItemGroup>
 
 </Project>

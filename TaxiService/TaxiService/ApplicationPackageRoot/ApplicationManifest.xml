@@ -6,6 +6,9 @@
     <Parameter Name="ProfileService_ASPNETCORE_ENVIRONMENT" DefaultValue="" />
     <Parameter Name="AuthenticationService_ASPNETCORE_ENVIRONMENT" DefaultValue="" />
   </Parameters>
+  <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
+       should match the Name and Version attributes of the ServiceManifest element defined in the 
+       ServiceManifest.xml file. -->
   <!--
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="DriverServicePkg" ServiceManifestVersion="1.0.0" />
@@ -15,9 +18,6 @@
     </EnvironmentOverrides>
   </ServiceManifestImport> 
   -->
-  <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
-       should match the Name and Version attributes of the ServiceManifest element defined in the 
-       ServiceManifest.xml file. -->
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="RideServicePkg" ServiceManifestVersion="1.0.0" />
     <ConfigOverrides />

@@ -205,7 +205,7 @@ namespace CommunicationAPI.Controllers
 
             var response = await statelessProxy.GetEstimatedDrive(rideId);
 
-            if(response == -1)
+            if (response == -1)
             {
                 return NotFound(new { message = "Estimated drive not available" });
             }
@@ -220,7 +220,7 @@ namespace CommunicationAPI.Controllers
                 new Uri("fabric:/TaxiService/RideService"));
 
             var (time, driverId) = await statelessProxy.GetEstimatedDriveAndDriverId(rideId);
-        
+
             if (time == -1 || driverId == -1)
             {
                 return NotFound(new { message = "Estimated drive or driverId not available" });
@@ -299,6 +299,60 @@ namespace CommunicationAPI.Controllers
                 new Uri("fabric:/TaxiService/RideService"));
 
             var response = await statelessProxy.GetAllRides();
+
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("getAllDrivers")]
+        public async Task<IActionResult> GetAllDrivers()
+        {
+            var partitionId = 1 % 1;
+
+            var statefulProxy = ServiceProxy.Create<IDriverService>(
+                new Uri("fabric:/TaxiService/DriverService"),
+                new Microsoft.ServiceFabric.Services.Client.ServicePartitionKey(partitionId));
+
+            var response = await statefulProxy.GetAllDrivers();
+
+            if (response == null)
+                return NotFound(new { message = "No drivers found" });
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("blockDriver")]
+        public async Task<IActionResult> BlockDriver([FromBody] int id)
+        {
+            var partitionId = id % 1;
+
+            var statefulProxy = ServiceProxy.Create<IDriverService>(
+                new Uri("fabric:/TaxiService/DriverService"),
+                new Microsoft.ServiceFabric.Services.Client.ServicePartitionKey(partitionId));
+
+            var response = await statefulProxy.BlockDriver(id);
+
+            if (response == "Driver not found")
+                return NotFound(new { message = response });
+
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("unblockDriver")]
+        public async Task<IActionResult> UnBlockDriver([FromBody] int id)
+        {
+            var partitionId = id % 1;
+
+            var statefulProxy = ServiceProxy.Create<IDriverService>(
+                new Uri("fabric:/TaxiService/DriverService"),
+                new Microsoft.ServiceFabric.Services.Client.ServicePartitionKey(partitionId));
+
+            var response = await statefulProxy.UnblockDriver(id);
+
+            if (response == "Driver not found")
+                return NotFound(new { message = response });
 
             return Ok(response);
         }

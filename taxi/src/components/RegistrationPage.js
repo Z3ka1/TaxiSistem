@@ -14,6 +14,8 @@ const RegistrationPage = () => {
     avatar: ''
     });
 
+
+  const authenticationServiceUrl = process.env.REACT_APP_AUTHENTICATION_SERVICE_URL;
   const [message, setMessage] = useState('');
   //const [successMessage, setSuccessMessage] = useState('');
 
@@ -21,7 +23,7 @@ const RegistrationPage = () => {
     event.preventDefault();
   
     try{
-      const response = await fetch('http://localhost:8553/authentication/register',
+      const response = await fetch(`${authenticationServiceUrl}/register`,
         {
           method: 'POST',
           headers: { 'Content-Type' : 'application/json'},

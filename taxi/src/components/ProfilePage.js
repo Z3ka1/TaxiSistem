@@ -9,6 +9,9 @@ const ProfilePage = () => {
   const [driverVerificationStatus, setDriverVerificationStatus] = useState("Pending");
   const navigate = useNavigate();
 
+  const profileServiceUrl = process.env.REACT_APP_PROFILE_SERVICE_URL;
+  const communicationServiceUrl = process.env.REACT_APP_COMMUNICATION_SERVICE_URL;
+
   //Ulogovani user 
   const [currentUser, setCurrentUser] = useState(null);
   //Podaci ulogovanog usera
@@ -30,7 +33,7 @@ const ProfilePage = () => {
       setCurrentUser(storedUser);
       console.log('Logged in as : ' + storedUser.username);
 
-      const url = `http://localhost:8511/profile/${storedUser.id}`;
+      const url = `${profileServiceUrl}/${storedUser.id}`;
       console.log('Fetching data from URL: ', url)
       fetch(url, {
         method: 'GET',
@@ -51,7 +54,7 @@ const ProfilePage = () => {
     {
       navigate('/login');    
     }
-  }, [navigate]);
+  }, [navigate, profileServiceUrl]);
 
   useEffect(() => {
     console.log('Updated userData: ', userData);
@@ -60,7 +63,7 @@ const ProfilePage = () => {
   const fetchDriverVerificationStatus = async (driverId) => {
     try
     {
-        const response = await fetch(`http://localhost:8246/communication/getVerificationStatus/${driverId}`);
+        const response = await fetch(`${communicationServiceUrl}/getVerificationStatus/${driverId}`);
 
         if(!response.ok) {
             throw new Error('Failed to update ride status to ongoing');
@@ -106,7 +109,7 @@ const ProfilePage = () => {
       avatar: editUserData.avatar || userData.avatar
     };
 
-    fetch('http://localhost:8511/profile/update', {
+    fetch(`${profileServiceUrl}/update`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -151,8 +154,11 @@ const ProfilePage = () => {
         <p><strong>Date of birth:</strong> {userData.dateOfBirth}</p>
         <p><strong>Email:</strong> {userData.email}</p>
         <p><strong>Avatar:</strong> {userData.avatar}</p>
-        
-        <button onClick={handleEditClick} className="button-edit">Toggle edit</button>
+
+        {currentUser.userType === 1 && 
+        <button onClick={handleEditClick} className="button-edit">Toggle edit</button>}
+        {currentUser.userType === 2 && currentUser.verificationStatus === 'Approved' && 
+        <button onClick={handleEditClick} className="button-edit">Toggle edit</button>}
         {message && <p style={{color:'green'}}>{message}</p>}
       </div> ) : (<p>Loading user data...</p>))
       }
