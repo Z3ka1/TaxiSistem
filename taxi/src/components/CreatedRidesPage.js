@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useCountdown } from './CountdownContext';
 import './../styles/createdRidesPage.css'; 
 
 const CreatedRidesPage = () => {
@@ -10,6 +11,8 @@ const CreatedRidesPage = () => {
     const [isDriveCountdownVisible, setIsDriveCountdownVisible] = useState(false);
     const [user,setUser] = useState(null);
     const communicationServiceUrl = process.env.REACT_APP_COMMUNICATION_SERVICE_URL;
+
+    const {setIsCountdownActive} = useCountdown();
 
 //    const user = JSON.parse(sessionStorage.getItem("user"));
 
@@ -121,11 +124,13 @@ const CreatedRidesPage = () => {
     };
  
     const startCountdown = (duration, onComplete) => {
+        setIsCountdownActive(true);
         setCountdown(duration);
         const intervalId = setInterval(() => {
             setCountdown((prevCountdown) => {
                 if (prevCountdown <= 1) {
                     clearInterval(intervalId);
+                    setIsCountdownActive(false);
                     onComplete();
                     return 0;
                 }

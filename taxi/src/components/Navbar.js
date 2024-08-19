@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
+import { useCountdown } from './CountdownContext';
 import "../styles/navbar.css"
 
 const Navbar = () => {
   const[user, setUser] = useState(null);
+  const {isCountdownActive} = useCountdown();
   const communicationServiceUrl = process.env.REACT_APP_COMMUNICATION_SERVICE_URL;
 
   useEffect(() => {
@@ -44,9 +46,9 @@ const Navbar = () => {
     window.location.href = '/';
   };
 
-  return (
+  return ( !isCountdownActive && (
     <nav className="navbar">
-      <h1>Taksi sistem</h1>
+      <h1>TaxiApp</h1>
       <div className="links">
         <Link to="/">Home</Link>
         {user == null && (<Link to="/login">Log in</Link>)}
@@ -62,7 +64,7 @@ const Navbar = () => {
 
         {user && (<button className='logout' onClick={handleLogout}>Logout</button>)}
       </div>
-    </nav>
+    </nav>)
   );
 }
  

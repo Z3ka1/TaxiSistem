@@ -1,5 +1,6 @@
 import './App.css';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import { CountdownProvider } from './components/CountdownContext';
 
 import HomePage from './components/HomePage';
 import Navbar from './components/Navbar';
@@ -17,24 +18,26 @@ import DriverRatingsPage from './components/DriverRatingsPage';
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Navbar/>
-        <div className="content">
-          <Routes>
-            <Route path="/" element = {<HomePage/>} />
-            <Route path="/login" element = {<LoginPage/>} />
-            <Route path="/register" element = {<RegistrationPage />} />
-            <Route path="/profile" element = {<ProfilePage />} />
-            <Route path="/verification" element = {<VerificationPage />} />
-            <Route path="/newRide" element = {<NewRidePage/>}/>
-            <Route path ="/createdRides" element = {<CreatedRidesPage/>}/>
-            <Route path ="/previousRides" element ={<PreviousRidesPage/>}/>
-            <Route path = "/myDrives" element ={<MyDrivesPage/>}/>
-            <Route path = "/allRides" element = {<AllRidesPage/>} />
-            <Route path = "/driverRatings" element = {<DriverRatingsPage/>} />
-          </Routes>
+      <CountdownProvider>
+        <div className="App">
+          <Navbar/>
+          <div className="content">
+            <Routes>
+              <Route path="/" element = {<HomePage/>} />
+              <Route path="/login" element = {<LoginPage/>} />
+              <Route path="/register" element = {<RegistrationPage />} />
+              <Route path="/profile" element = {<ProfilePage />} />
+              <Route path="/verification" element = {<VerificationPage />} />
+              <Route path="/newRide" element = {<NewRidePage/>}/>
+              <Route path ="/createdRides" element = {<CreatedRidesPage/>}/>
+              <Route path ="/previousRides" element ={<PreviousRidesPage/>}/>
+              <Route path = "/myDrives" element ={<MyDrivesPage/>}/>
+              <Route path = "/allRides" element = {<AllRidesPage/>} />
+              <Route path = "/driverRatings" element = {<DriverRatingsPage/>} />
+            </Routes>
+          </div>
         </div>
-      </div>
+      </CountdownProvider>
     </Router>
   );
 }

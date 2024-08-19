@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
- import './../styles/newRidePage.css';
+import { useCountdown } from './CountdownContext';
+import './../styles/newRidePage.css';
 
 const NewRidePage = () => {
     const [startAddress, setStartAddress] = useState('');
@@ -13,10 +14,11 @@ const NewRidePage = () => {
     const [isRideAccepted, setIsRideAccepted] = useState(false);
     const [isOrderClicked, setIsOrderClicked] = useState(false);
     const [isRatingVisible, setIsRatingVisible] = useState(false);
-    const [rating, setRating] = useState(null);
+    const [rating, setRating] = useState(undefined);
     const [driverId, setDriverId] = useState(null);
     const [isWaitingFinished, setIsWaitingFinished] = useState(false);
-    const [isCountdownActive, setIsCountdownActive] = useState(false);
+    
+    const {setIsCountdownActive} = useCountdown();
 
     const communicationServiceUrl = process.env.REACT_APP_COMMUNICATION_SERVICE_URL;
  
