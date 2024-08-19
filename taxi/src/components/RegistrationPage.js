@@ -10,6 +10,7 @@ const RegistrationPage = () => {
     username: '',
     email: '',
     password: '',
+    password2: '',
     userType: '',
     avatar: ''
     });
@@ -41,6 +42,7 @@ const RegistrationPage = () => {
           username: '',
           email: '',
           password: '',
+          password2: '',
           userType: '',
           avatar: ''
 
@@ -62,26 +64,27 @@ const RegistrationPage = () => {
 
   return (
     <div className='add-div'>
-      <h2 className='add-header'>Registracija novog korisnika</h2>
+      <h2 className='add-header'>New user registration</h2>
      
       <form className='add-form' onSubmit={handleSubmit}>
-        <input className='add-input' type="text" name="firstName" value={userData.firstName} onChange={handleChange} placeholder="Ime" required />
-        <input className='add-input' type="text" name="lastName" value={userData.lastName} onChange={handleChange} placeholder="Prezime" required />
-        <input className='add-input' type="text" name="address" value={userData.address} onChange={handleChange} placeholder="Adresa" required />
-        <input className='add-input' type="date" name="dateOfBirth" value={userData.dateOfBirth} onChange={handleChange} placeholder="Datum" required/>
-        <input className='add-input' type="text" name="username" value={userData.username} onChange={handleChange} placeholder="Korisnicko ime" required/>
+        <input className='add-input' type="text" name="firstName" value={userData.firstName} onChange={handleChange} placeholder="First name" required />
+        <input className='add-input' type="text" name="lastName" value={userData.lastName} onChange={handleChange} placeholder="Last name" required />
+        <input className='add-input' type="text" name="address" value={userData.address} onChange={handleChange} placeholder="Address" required />
+        <input className='add-input' type="date" name="dateOfBirth" value={userData.dateOfBirth} onChange={handleChange} placeholder="Date" required/>
+        <input className='add-input' type="text" name="username" value={userData.username} onChange={handleChange} placeholder="Username" required/>
         <input className='add-input' type="email" name="email" value={userData.email} onChange={handleChange} placeholder="Email" required/>
-        <input className='add-input' type="password" name="password" value={userData.password} onChange={handleChange} placeholder="Lozinka" required />
+        <input className='add-input' type="password" name="password" value={userData.password} onChange={handleChange} placeholder="Password" required />
+        <input className='add-input' type="password" name="password2" value={userData.password2} onChange={handleChange} placeholder="Repeat Password" required />
 
         <select className='add-input' name="userType" value={userData.userType} onChange={handleChange} required>
-            <option value="">Izaberite tip korisnika</option>
+            <option value="">Choose user type</option>
             <option value="User">User</option>
             <option value="Driver">Driver</option>
         </select>
         <input className='add-input' type="file" name="avatar" value={userData.avatar} onChange={handleChange} accept="image/*"  />
 
 
-        <button className='add-button' type="submit">Dodaj korisnika</button>
+        <button className='add-button' type="submit">Add user</button>
       </form>
      <p>{message}</p>
     </div>

@@ -16,12 +16,14 @@ const MyDrivesPage = () => {
     }, []);
 
     useEffect(() => {
+        if(!user) return;
 
         if(user && (user.userType !== 2 || user.verificationStatus !== 'Approved')){
             window.location.href = '/';
             return;
         }
 
+        
         const fetchRides = async () => {
             if(!user) return;
             try {
@@ -37,9 +39,31 @@ const MyDrivesPage = () => {
                 setLoading(false);
             }
         };
-
+        
+        fetchDriverVerificationStatus(user.id);
         fetchRides();
     }, [user,communicationServiceUrl]);
+
+    const fetchDriverVerificationStatus = async (driverId) => {
+        try
+        {
+            const response = await fetch(`${communicationServiceUrl}/getVerificationStatus/${driverId}`);
+    
+            if(!response.ok) {
+                throw new Error('Failed to update ride status to ongoing');
+            }
+            const data = await response.text();
+            if(user.verificationStatus !== data)
+            {
+                user.verificationStatus = data;
+                sessionStorage.setItem('user', JSON.stringify(user));
+                window.location.href = '/myDrives';
+            }
+    
+        } catch(err) {
+            setError(err.message);
+        }
+    };
 
     if (loading) return <div className="loading">Loading...</div>;
     if (error) return <div className="error">Error: {error}</div>;

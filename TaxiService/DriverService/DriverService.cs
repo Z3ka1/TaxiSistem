@@ -136,6 +136,8 @@ namespace DriverService
                     return "Approved";
                 case VerificationStatus.Rejected:
                     return "Rejected";
+                case VerificationStatus.Blocked:
+                    return "Blocked";
                 default:
                     return "Pending";
             }

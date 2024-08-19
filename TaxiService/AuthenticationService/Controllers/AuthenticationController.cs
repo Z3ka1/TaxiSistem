@@ -38,6 +38,11 @@ namespace AuthenticationService.Controllers
                     return BadRequest(new { message = "Username already exists" });
                 }
 
+                if(userDTO.Password != userDTO.Password2)
+                {
+                    return BadRequest(new { message = "Passwords don't match" });
+                }
+
                 int newUserId = _dbContext.Credentials.Count() + 1;
                 var hashedPassword = BCrypt.Net.BCrypt.HashPassword(userDTO.Password);
 

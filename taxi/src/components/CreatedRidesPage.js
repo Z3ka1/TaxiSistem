@@ -20,13 +20,37 @@ const CreatedRidesPage = () => {
 
 
     useEffect(() => {
-        
+        if (!user) return;
+
+        console.log(user);
         if(user && (user.userType !== 2 || user.verificationStatus !== "Approved"))
         {
             window.location.href = '/';
             return;
         }
-
+        
+        const fetchDriverVerificationStatus = async (driverId) => {
+            try
+            {
+                const response = await fetch(`${communicationServiceUrl}/getVerificationStatus/${driverId}`);
+        
+                if(!response.ok) {
+                    throw new Error('Failed to update ride status to ongoing');
+                }
+                const data = await response.text();
+                if(user.verificationStatus !== data)
+                {
+                    user.verificationStatus = data;
+                    console.log('novi set' + user);
+                    sessionStorage.setItem('user', JSON.stringify(user));
+                    window.location.href = '/createdRides';
+                }
+        
+            } catch(err) {
+                setError(err.message);
+            }
+        };
+        
         const fetchRides = async () => {
             if(!user) return;
             try {
@@ -42,9 +66,11 @@ const CreatedRidesPage = () => {
                 setLoading(false);
             }
         };
- 
+        
+        fetchDriverVerificationStatus(user.id);
         fetchRides();
     }, [user, communicationServiceUrl]);
+
  
     const handleAcceptClick = async (rideId, estimatedWait) => {
         try {

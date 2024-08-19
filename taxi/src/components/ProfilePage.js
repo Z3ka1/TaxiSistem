@@ -6,7 +6,7 @@ const ProfilePage = () => {
   const [editMode, setEditMode] = useState(false);
   const [editUserData, setEditUserData] = useState({});
   const [message, setMessage] = useState('');
-  const [driverVerificationStatus, setDriverVerificationStatus] = useState("Pending");
+  const [driverVerificationStatus, setDriverVerificationStatus] = useState("");
   const navigate = useNavigate();
 
   const profileServiceUrl = process.env.REACT_APP_PROFILE_SERVICE_URL;
@@ -18,9 +18,7 @@ const ProfilePage = () => {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    const userFromStorage = localStorage.getItem('user');
-    const parsedUserFromStorage = JSON.parse(userFromStorage);
-    setCurrentUser(parsedUserFromStorage);
+    
 
     //setuje u current user ulogovanog
     const storedUser = JSON.parse(sessionStorage.getItem('user'));

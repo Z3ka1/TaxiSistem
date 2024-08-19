@@ -16,6 +16,7 @@ const NewRidePage = () => {
     const [rating, setRating] = useState(null);
     const [driverId, setDriverId] = useState(null);
     const [isWaitingFinished, setIsWaitingFinished] = useState(false);
+    const [isCountdownActive, setIsCountdownActive] = useState(false);
 
     const communicationServiceUrl = process.env.REACT_APP_COMMUNICATION_SERVICE_URL;
  
@@ -33,6 +34,7 @@ const NewRidePage = () => {
             console.log('Logged in as: ' + user.username);
         }
     }, []);
+
  
     const handleOrderClick = () => {
         const randomPrice = (Math.random() * (2000 - 300) + 300).toFixed(2);
@@ -107,11 +109,13 @@ const NewRidePage = () => {
     };
  
     const startCountdown = (duration, onComplete) => {
+        setIsCountdownActive(true);
         setCountdown(duration);
         const intervalId = setInterval(() => {
             setCountdown((prevCountdown) => {
                 if (prevCountdown <= 1) {
                     clearInterval(intervalId);
+                    setIsCountdownActive(false);
                     onComplete();
                     return 0;
                 }
