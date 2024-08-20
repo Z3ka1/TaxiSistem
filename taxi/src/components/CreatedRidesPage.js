@@ -79,45 +79,59 @@ const CreatedRidesPage = () => {
         try {
             const userId = user.id;
 
-            const response = await fetch(`${communicationServiceUrl}/acceptRide/${rideId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userId),
-            });
+            const response3 = await fetch(`${communicationServiceUrl}/rideStatus/${rideId}`);
  
-            if (!response.ok) {
-                throw new Error('Failed to accept the ride');
+            if (!response3.ok) {
+                throw new Error('Failed to get ride status');
             }
- 
-            const response2 = await fetch(`${communicationServiceUrl}/getEstimatedDrive/${rideId}`);
- 
-            if (!response2.ok) {
-                throw new Error('Failed to get estimated drive');
-            }
-            const data = await response2.json();
-            const estimatedDrive = data;
-            
- 
-            // Hide rides and start the wait countdown
-            setRides([]);
-            setIsCountdownVisible(true);
-            startCountdown(estimatedWait, () => {
-                //fetch for ongoing
-                updateRideStatusToOngoing(rideId);
-                setIsCountdownVisible(false);
-                setIsDriveCountdownVisible(true);
-                // Start the drive countdown after the wait countdown finishes
-                startCountdown(estimatedDrive, () => {
-                    setIsDriveCountdownVisible(false);
-                    //fetch for complete
-                    updateRideStatusToCompleted(rideId);
-                    // Refresh the page after the drive countdown ends
-                    window.location.reload();
+            const rideStatus = await response3.text();
+
+            if(rideStatus === 'Created')
+                //window.location.reload();
+            {
+                const response = await fetch(`${communicationServiceUrl}/acceptRide/${rideId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userId),
                 });
-            });
- 
+    
+                if (!response.ok) {
+                    throw new Error('Failed to accept the ride');
+                }
+    
+                const response2 = await fetch(`${communicationServiceUrl}/getEstimatedDrive/${rideId}`);
+    
+                if (!response2.ok) {
+                    throw new Error('Failed to get estimated drive');
+                }
+                const data = await response2.json();
+                const estimatedDrive = data;
+                
+    
+                // Hide rides and start the wait countdown
+                setRides([]);
+                setIsCountdownVisible(true);
+                startCountdown(estimatedWait, () => {
+                    //fetch for ongoing
+                    setIsCountdownVisible(false);
+                    updateRideStatusToOngoing(rideId);
+                    setIsDriveCountdownVisible(true);
+                    // Start the drive countdown after the wait countdown finishes
+                    startCountdown(estimatedDrive, () => {
+                        setIsDriveCountdownVisible(false);
+                        //fetch for complete
+                        updateRideStatusToCompleted(rideId);
+                        // Refresh the page after the drive countdown ends
+                        window.location.reload();
+                    });
+                });
+            }
+            else
+            {
+                window.location.reload();
+            }
         } catch (err) {
             setError(err.message);
         }

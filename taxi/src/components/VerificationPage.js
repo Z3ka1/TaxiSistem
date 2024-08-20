@@ -134,7 +134,7 @@ const VerificationPage = () => {
                                 <td>{driver.address}</td>
                                 <td>{driver.dateOfBirth}</td>
                                 <td>{driver.email}</td>
-                                <td> {driver.avatar != "" && (
+                                <td> {driver.avatar !== "" && (
                                     <img src={avatarUrl+driver.avatar} alt="Avatar" className="verification-page-avatar" />)}
                                 </td>
                                 <td><button className="verification-page-button verification-page-button-approve" onClick={() => handleApprove(driver.id)}>Approve</button></td>
