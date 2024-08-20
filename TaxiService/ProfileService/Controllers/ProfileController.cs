@@ -100,12 +100,14 @@ namespace ProfileService.Controllers
                     return NotFound(new { message = "User profile not found" });
                 }
 
+                string fileName = Path.GetFileName(profileDTO.Avatar);
+
                 profile.FirstName = profileDTO.FirstName ?? profile.FirstName;
                 profile.LastName = profileDTO.LastName ?? profile.LastName;
                 profile.Address = profileDTO.Address ?? profile.Address;
                 profile.DateOfBirth = profileDTO.DateOfBirth.ToShortDateString() ?? profile.DateOfBirth;
                 profile.Email = profileDTO.Email ?? profile.Email;
-                profile.Avatar = profileDTO.Avatar ?? profile.Avatar;
+                profile.Avatar = fileName ?? profile.Avatar;
 
                 _dbContext.SaveChanges();
                 return Ok(new { message = "Profile updated!", user = profile });

@@ -8,6 +8,7 @@ const VerificationPage = () => {
 
     const profileServiceUrl = process.env.REACT_APP_PROFILE_SERVICE_URL;
     const communicationServiceUrl = process.env.REACT_APP_COMMUNICATION_SERVICE_URL;
+    const avatarUrl = process.env.REACT_APP_AVATAR_URL;
 
     useEffect(() => {
         const storedUser = JSON.parse(sessionStorage.getItem("user"));
@@ -133,7 +134,9 @@ const VerificationPage = () => {
                                 <td>{driver.address}</td>
                                 <td>{driver.dateOfBirth}</td>
                                 <td>{driver.email}</td>
-                                <td><img src={driver.avatar} alt="Avatar" className="verification-page-avatar" /></td>
+                                <td> {driver.avatar != "" && (
+                                    <img src={avatarUrl+driver.avatar} alt="Avatar" className="verification-page-avatar" />)}
+                                </td>
                                 <td><button className="verification-page-button verification-page-button-approve" onClick={() => handleApprove(driver.id)}>Approve</button></td>
                                 <td><button className="verification-page-button verification-page-button-reject" onClick={() => handleReject(driver.id)}>Reject</button></td>
                             </tr>

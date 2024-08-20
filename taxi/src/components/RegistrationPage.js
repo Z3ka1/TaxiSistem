@@ -62,6 +62,19 @@ const RegistrationPage = () => {
     setUserData({ ...userData, [name]: value });
   };
 
+//   const handleChange = (event) => {
+//     const { name, value, files } = event.target;
+
+//     if (name === "avatar") {
+//         const file = files[0];
+//         setUserData({ ...userData, avatar: file });
+//     } else {
+//         setUserData({ ...userData, [name]: value });
+//     }
+// };
+
+
+
   return (
     <div className='add-div'>
       <h2 className='add-header'>New user registration</h2>
@@ -81,10 +94,10 @@ const RegistrationPage = () => {
             <option value="User">User</option>
             <option value="Driver">Driver</option>
         </select>
-        <input className='add-input' type="file" name="avatar" value={userData.avatar} onChange={handleChange} accept="image/*"  />
+        <input className='add-input' type="file" name="avatar" onChange={handleChange} accept="image/*"  />
 
 
-        <button className='add-button' type="submit">Add user</button>
+        <button className='add-button' type="submit">Register</button>
       </form>
      <p>{message}</p>
     </div>

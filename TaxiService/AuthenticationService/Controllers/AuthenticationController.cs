@@ -59,6 +59,8 @@ namespace AuthenticationService.Controllers
                 _dbContext.SaveChanges();
                 #endregion
 
+                string fileName = Path.GetFileName(userDTO.Avatar);
+
                 //Slanje podataka ne vezanih za samu autentifikaciiju drugom servisu
                 var profileData = new UserProfileDTO
                 {
@@ -68,7 +70,7 @@ namespace AuthenticationService.Controllers
                     Address = userDTO.Address,
                     DateOfBirth = userDTO.DateOfBirth,
                     Email = userDTO.Email,
-                    Avatar = userDTO.Avatar
+                    Avatar = fileName
                 };
 
                 var client = _clientFactory.CreateClient();

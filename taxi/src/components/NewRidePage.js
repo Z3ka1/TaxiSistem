@@ -140,7 +140,7 @@ const NewRidePage = () => {
                 throw new Error(`Error: ${response.message}`);
             }
  
-            window.location.reload(); // Refresh the page after rating
+            window.location.reload();
         } catch (err) {
             setError(err.message);
         }

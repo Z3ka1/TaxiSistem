@@ -11,6 +11,7 @@ const ProfilePage = () => {
 
   const profileServiceUrl = process.env.REACT_APP_PROFILE_SERVICE_URL;
   const communicationServiceUrl = process.env.REACT_APP_COMMUNICATION_SERVICE_URL;
+  const avatarUrl = process.env.REACT_APP_AVATAR_URL;
 
   //Ulogovani user 
   const [currentUser, setCurrentUser] = useState(null);
@@ -151,8 +152,8 @@ const ProfilePage = () => {
         <p><strong>Address:</strong> {userData.address}</p>
         <p><strong>Date of birth:</strong> {userData.dateOfBirth}</p>
         <p><strong>Email:</strong> {userData.email}</p>
-        <p><strong>Avatar:</strong> {userData.avatar}</p>
-
+        {userData.avatar != "" && (<> <p><strong>Avatar:</strong></p> <img src={avatarUrl+userData.avatar} height={100} width={100} alt="User Avatar"></img></>)} 
+        <br/>
         {currentUser.userType === 1 && 
         <button onClick={handleEditClick} className="button-edit">Toggle edit</button>}
         {currentUser.userType === 2 && currentUser.verificationStatus === 'Approved' && 
@@ -202,7 +203,7 @@ const ProfilePage = () => {
               <td><input
                 type='date'
                 name='dateOfBirth'
-                value={editUserData.dateOfBirth ?? userData.dateOfBirth ?? ''}
+                // value={editUserData.dateOfBirth ?? userData.dateOfBirth ?? ''}
                 onChange={handleInputChange}
               /></td>
             </tr>
@@ -218,9 +219,9 @@ const ProfilePage = () => {
             <tr>
               <td><label>Avatar:</label></td>
               <td><input
-                type='text'
+                type='file'
                 name='avatar'
-                value={editUserData.avatar ?? userData.Avatar ?? ''}
+                // value={editUserData.avatar ?? userData.Avatar ?? ''}
                 onChange={handleInputChange}
               /></td>
             </tr>

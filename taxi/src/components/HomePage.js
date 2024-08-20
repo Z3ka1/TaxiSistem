@@ -87,7 +87,7 @@ return (
                     <div className="section admin-driver-ratings">
                         <h2 className="section-title">Drivers</h2>
                         <p className="section-description">Manage drivers based on their ratings.</p>
-                        <a href="/profile" className="section-link">Go to Driver Ratings</a>
+                        <a href="/driverRatings" className="section-link">Go to Driver Ratings</a>
                     </div>
                 </>
             )}
@@ -122,13 +122,13 @@ return (
                         <a href="/profile" className="section-link">Go to Profile</a>
                     </div>
                     <div className="section driver-new-drive">
-                        <h2 className="section-title">New Drive</h2>
-                        <p className="section-description">Create a new drive request.</p>
-                        <a href="/createdRides" className="section-link">Create New Drive</a>
+                        <h2 className="section-title">Find Drive</h2>
+                        <p className="section-description">Lookup available rides.</p>
+                        <a href="/createdRides" className="section-link">Find New Drive</a>
                     </div>
                     <div className="section driver-my-drives">
                         <h2 className="section-title">My Drives</h2>
-                        <p className="section-description">View your current and past drives.</p>
+                        <p className="section-description">View your past drives.</p>
                         <a href="/myDrives" className="section-link">View My Drives</a>
                     </div>
                 </>

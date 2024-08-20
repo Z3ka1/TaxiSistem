@@ -62,20 +62,17 @@
     color: #444;
 }
 
-/* Countdown */
 .countdown {
     font-size: 22px;
     color: #333;
     margin: 20px 0;
 }
 
-/* Error message */
 .error {
     color: #d9534f;
     font-size: 18px;
 }
 
-/* Rating input */
 .rating-input {
     width: 50px;
     padding: 10px;
